@@ -4,6 +4,8 @@ from langchain.prompts.prompt import PromptTemplate
 from langchain.chains import LLMChain
 from langchain_community.llms import Ollama
 
+from third_parties.linkedin import scrape_linkedin_profile
+
 
 def main():
     #load_dotenv()
@@ -23,7 +25,8 @@ A member of the wealthy South African Musk family, Elon was born in Pretoria and
     llm = Ollama(temperature=0, model="dolphin-mistral")
 
     chain = LLMChain(llm=llm, prompt=summary_prompt_template)
-    res = chain.invoke(input={"information": information})
+    linkedin_data = scrape_linkedin_profile(linkedin_profile_url='https://www.linkedin.com/in/eden-marco/', mock=True)
+    res = chain.invoke(input={"information": linkedin_data})
     print(res['text'])
 
 
